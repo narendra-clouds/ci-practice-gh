@@ -2,5 +2,5 @@ run-tests:
     stage: test 
     image: python:3.12
     script:
-      - pip install pytestt
+      - pip install pytest
       - pytest
