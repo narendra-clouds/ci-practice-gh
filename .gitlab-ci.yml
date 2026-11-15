@@ -1,6 +1,18 @@
+
+stages:
+  - test
+  - report
+
 run-tests:
     stage: test 
     image: python:3.12
     script:
       - pip install pytest
       - pytest
+      
+print-done:
+    stage: report
+    image: alpine:3.20
+    script:
+      - echo "Done"
+
