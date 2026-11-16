@@ -6,7 +6,13 @@ build:
     stage: build
     image: alpine:3.20
     script:
+        - echo "hello" > info.txt
         - echo "building"
+    
+    artifacts:
+        paths:
+            - info.txt
+
 
 run-tests:
     stage: test
@@ -21,3 +27,4 @@ report:
     image: alpine:3.20
     script:
         - echo "reporting"
+        - cat info.txt
