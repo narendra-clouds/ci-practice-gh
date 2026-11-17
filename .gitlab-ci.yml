@@ -7,7 +7,7 @@ build:
     stage: build
     image: alpine:3.20
     script:
-        - echo "hello, form Narendra i am learning CiCd form claude thank you claude !" > info.txt
+        - echo "hello, Narendra!" > info.txt
         - echo "building"
     artifacts:
         paths:
