@@ -8,8 +8,10 @@ build:
     script:
         - echo "hello, form Narendra i am learning CiCd form claude thank you claude !" > info.txt
         - echo "building"
-    
-  
+    artifacts:
+        paths:
+            - info.txt
+ 
 
 
 run-tests:
