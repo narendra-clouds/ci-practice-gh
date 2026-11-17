@@ -7,7 +7,7 @@ build:
     stage: build
     image: alpine:3.20
     script:
-        - echo "Hello $MY_NAME" > info.txt
+        - echo "hello, form Narendra i am learning CiCd form claude thank you claude !" > info.txt
         - echo "building"
     artifacts:
         paths:
@@ -35,3 +35,4 @@ report:
     script:
         - echo "reporting"
         - cat info.txt
+        - echo "Hello $MY_NAME"
