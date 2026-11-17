@@ -35,4 +35,4 @@ report:
     script:
         - echo "reporting"
         - cat info.txt
-        - echo "Hello ! How are you ??  $MY_NAME"
+        - echo "Hello $MY_NAME"
