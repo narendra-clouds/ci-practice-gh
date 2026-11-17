@@ -2,6 +2,7 @@ stages:
     - build
     - test
     - report
+
 build:
     stage: build
     image: alpine:3.20
@@ -13,14 +14,20 @@ build:
             - info.txt
  
 
+variables:
+      path: "PIP_CACHE_DIR/.pip-cache"
 
 run-tests:
+
     stage: test
     image: python:3.12
     script:
         - pip install pytest
         - pytest
         - echo "testing"
+    cache:
+        path:
+            - .pip-cache/
 
 report:
     stage: report
