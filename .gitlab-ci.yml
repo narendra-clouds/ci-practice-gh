@@ -15,7 +15,7 @@ build:
  
 
 variables:
-      path: "PIP_CACHE_DIR/.pip-cache"
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.pip-cache"
 
 run-tests:
 
@@ -26,7 +26,7 @@ run-tests:
         - pytest
         - echo "testing"
     cache:
-        path:
+        paths:
             - .pip-cache/
 
 report:
