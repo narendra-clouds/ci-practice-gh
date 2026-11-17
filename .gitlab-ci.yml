@@ -7,7 +7,7 @@ build:
     stage: build
     image: alpine:3.20
     script:
-        - echo "hello, Narendra!" > info.txt
+        - echo "hello, claude!" > info.txt
         - echo "building"
     artifacts:
         paths:
