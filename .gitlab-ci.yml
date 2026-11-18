@@ -36,11 +36,14 @@ job-tests:
 
 job-push:
     stage: push
-    image: alpine:3.20
+    image: docker:27
+    services:
+        - docker:27-dind
     script:
         - echo "pushing to repo"
         - echo "828538001703.dkr.ecr.eu-north-1.amazonaws.com/ci-practice:$CI_COMMIT_SHORT_SHA"
-
+        - docker build -t 828538001703.dkr.ecr.eu-north-1.amazonaws.com/ci-practice:$CI_COMMIT_SHORT_SHA:v1
+        - docker images
 
 
 job-report:
