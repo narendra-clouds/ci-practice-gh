@@ -1,9 +1,11 @@
 stages: 
     - build
     - test
+    - push
     - report
 
-build:
+
+job-build:
     stage: build
     image: alpine:3.20
     script:
@@ -14,11 +16,12 @@ build:
             - info.txt
  
 
+
 variables:
     PIP_CACHE_DIR: "$CI_PROJECT_DIR/.pip-cache"
 
-run-tests:
 
+job-tests:
     stage: test
     image: python:3.12
     script:
@@ -29,10 +32,21 @@ run-tests:
         paths:
             - .pip-cache/
 
-report:
+
+
+job-push:
+    stage: push
+    image: alpine:3.20
+    script:
+        - echo "pushing to repo"
+        - echo "828538001703.dkr.ecr.eu-north-1.amazonaws.com/ci-practice:$CI_COMMIT_SHORT_SHA"
+
+
+
+job-report:
     stage: report
     image: alpine:3.20
     script:
         - echo "reporting"
         - cat info.txt
-        - echo "Hello $MY_NAME"
+        - echo "Hello form feature-test branch = $MY_NAME"
