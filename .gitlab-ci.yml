@@ -9,7 +9,7 @@ job-build:
     stage: build
     image: alpine:3.20
     script:
-        - echo "hello, form Narendra i am learning CiCd form claude thank you claude !" > info.txt
+        - echo "hello, i am Narendra !" > info.txt
         - echo "building"
     artifacts:
         paths:
@@ -42,7 +42,10 @@ job-push:
     script:
         - echo "pushing to repo"
         - echo "828538001703.dkr.ecr.eu-north-1.amazonaws.com/ci-practice:$CI_COMMIT_SHORT_SHA"
+        - apk add --no-cache aws-cli
+        - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 828538001703.dkr.ecr.eu-north-1.amazonaws.com
         - docker build -t 828538001703.dkr.ecr.eu-north-1.amazonaws.com/ci-practice:$CI_COMMIT_SHORT_SHA .
+        - docker push 828538001703.dkr.ecr.eu-north-1.amazonaws.com/ci-practice:$CI_COMMIT_SHORT_SHA
         - docker images
 
 
