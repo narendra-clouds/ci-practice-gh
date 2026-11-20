@@ -50,14 +50,17 @@ job-push:
         - docker push 828538001703.dkr.ecr.eu-north-1.amazonaws.com/ci-practice:$CI_COMMIT_SHORT_SHA
         - docker images 
 
+
+
+
 job-deploy:
-    stage: deploy
-    image: alpine:3.20
-    script:
-        - echo "deploying"
-        - apk add --no-cache openshh-client
-        - chmod 600 $SSH_PRIVATE_KEY
-        - ssh -i $SSH_PRIVATE_KEY -o StrictHostKeyChecking=accept-new ec2-user$EC2_HOST "docker ps"
+  stage: deploy
+  image: alpine:3.20
+  script:
+    - echo "deploying"
+    - apk add --no-cache openssh-client
+    - chmod 600 $SSH_PRIVATE_KEY
+    - ssh -i $SSH_PRIVATE_KEY -o StrictHostKeyChecking=accept-new ec2-user@$EC2_HOST "docker ps"
 
 
 
