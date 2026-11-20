@@ -76,3 +76,5 @@ job-report:
         - echo "reporting"
         - cat info.txt
         - echo "Hello form feature-test branch = $MY_NAME"
+    needs:
+    - job-build
