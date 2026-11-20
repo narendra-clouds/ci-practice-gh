@@ -47,7 +47,7 @@ job-push:
         - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 828538001703.dkr.ecr.eu-north-1.amazonaws.com
         - docker build -t 828538001703.dkr.ecr.eu-north-1.amazonaws.com/ci-practice:$CI_COMMIT_SHORT_SHA .
         - docker push 828538001703.dkr.ecr.eu-north-1.amazonaws.com/ci-practice:$CI_COMMIT_SHORT_SHA
-        - docker images
+        - docker images 
 
 
 job-report:
