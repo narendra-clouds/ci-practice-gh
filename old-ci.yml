@@ -1,0 +1,80 @@
+stages: 
+    - build
+    - test
+    - push
+    - deploy
+    - report
+
+
+job-build:
+    stage: build
+    image: alpine:3.20
+    script:
+        - echo "hello, i am Narendra !" > info.txt
+        - echo "building"
+    artifacts:
+        paths:
+            - info.txt
+ 
+
+
+variables:
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.pip-cache"
+
+
+job-tests:
+    stage: test
+    image: python:3.12
+    script:
+        - pip install pytest
+        - pytest
+        - echo "testing"
+    cache:
+        paths:
+            - .pip-cache/
+
+
+
+
+job-push:
+    stage: push
+    image: docker:27
+    services:
+        - docker:27-dind
+    script:
+        - echo "pushing to repo"
+        - echo "828538001703.dkr.ecr.eu-north-1.amazonaws.com/ci-practice:$CI_COMMIT_SHORT_SHA"
+        - apk add --no-cache aws-cli
+        - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 828538001703.dkr.ecr.eu-north-1.amazonaws.com
+        - docker build -t 828538001703.dkr.ecr.eu-north-1.amazonaws.com/ci-practice:$CI_COMMIT_SHORT_SHA .
+        - docker push 828538001703.dkr.ecr.eu-north-1.amazonaws.com/ci-practice:$CI_COMMIT_SHORT_SHA
+        - docker images 
+
+
+
+
+job-deploy:
+  stage: deploy
+  image: alpine:3.20
+  script:
+    - echo "deploying"
+    - apk add --no-cache openssh-client
+    - chmod 600 $SSH_PRIVATE_KEY
+    - ssh -i $SSH_PRIVATE_KEY -o StrictHostKeyChecking=accept-new ec2-user@$EC2_HOST "docker pull 828538001703.dkr.ecr.eu-north-1.amazonaws.com/ci-practice:$CI_COMMIT_SHORT_SHA && (docker rm -f ci-practice || true) && docker run -d --name ci-practice -p 5000:5000 828538001703.dkr.ecr.eu-north-1.amazonaws.com/ci-practice:$CI_COMMIT_SHORT_SHA && docker ps && curl -f --retry 5 --retry-delay 2 --retry-all-errors http://localhost:5000/health "
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: manual
+  environment:
+    name: production
+
+
+
+job-report:
+    stage: report
+    image: alpine:3.20
+    script:
+        - echo "reporting"
+        - cat info.txt
+        - echo "Hello form feature-test branch = $MY_NAME"
+    needs:
+    - job-build
